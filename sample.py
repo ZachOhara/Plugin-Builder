@@ -12,8 +12,11 @@ from base import configuration
 from base import generator
 
 def main():
-	image_config = configuration.load_configuration(open(GLOBAL_CONFIG), open(SAMPLE_IMAGE))
+	image_config = load_sample_configuration()
 	generator.generate_image(image_config).show()
+
+def load_sample_configuration():
+	return configuration.load_configuration(open(GLOBAL_CONFIG), open(SAMPLE_IMAGE))
 
 if __name__ == "__main__":
 	main()

@@ -25,6 +25,9 @@ class Configuration:
 			if type(self.raw_data[key]) is dict:
 				self.raw_data[key] = Configuration(self, self.raw_data[key])
 
+	def lookup(self, name):
+		return self.__getattr__(name)
+
 	def __getattr__(self, name):
 		try:
 			return self.raw_data[name]

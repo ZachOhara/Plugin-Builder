@@ -4,16 +4,16 @@ width: 500
 height: 300
 accent_color: "#F44336" # Material red 500
 controls:
-  pitch:
-    label: Pitch
-    type: knob
-    size: px120
-    x_pos: 15
-    y_pos: 50
   volume:
     label: Volume
     type: knob
-    size: px80
-    x_pos: 115
+    variant: px80
+    x_pos: 300
     y_pos: 150
+  pitch:
+    label: Pitch
+    type: knob
+    variant: px120
+    x_pos: 50
+    y_pos: 100
 

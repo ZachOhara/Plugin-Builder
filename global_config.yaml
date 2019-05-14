@@ -7,24 +7,31 @@ signature:
   right_text: ZachOhara.com
   v_offset: 10
   h_offset: 10
-knobs:
-  body_color: "#212121" # Material grey 900
-  ring_shade_opacity: 0.7 # between 0 and 1
-  rotation_range: 270 # in degrees
-  num_sprites: 128
-  px80:
-    size: 80
-    tick:
-      width: 5
-      height: 30
-    ring:
-      padding: 20
-      thickness: 2
-    label:
-      font_size: 18
-      v_offset: 25
-  px120:
-    size: 120
-    label:
-      font_size: 22
-      v_offset: 30
+defaults:
+  knob:
+    body_color: "#212121" # Material grey 900
+    ring_shade_opacity: 0.7 # between 0 and 1
+    rotation_range: 270 # in degrees
+    num_sprites: 128
+    px80:
+      size: 80
+      tick:
+        width: 5
+        height: 25
+      ring:
+        padding: 7
+        thickness: 4
+      label:
+        font_size: 18
+        v_offset: 25
+    px120:
+      size: 120
+      tick:
+        width: 10
+        height: 30
+      ring:
+        padding: 7
+        thickness: 4
+      label:
+        font_size: 22
+        v_offset: 30
