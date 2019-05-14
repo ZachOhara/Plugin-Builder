@@ -25,7 +25,7 @@ def generate_image(config, mode=PREVIEW_MODE):
 		control_config = config.controls.lookup(control_name)
 		default_config = control_config.defaults.lookup(
 			control_config.type).lookup(control_config.variant)
-		draw_control_label(draw, control_config, default_config.label)
+		darw_control_text(draw, control_config, default_config.label)
 	del draw
 	for control_name in dir(config.controls):
 		control_config = config.controls.lookup(control_name)
@@ -57,7 +57,7 @@ def draw_signature_text(draw, config):
 	draw.text(left_textpos, left_text, fill=config.font_color, font=font)
 	draw.text(right_textpos, right_text, fill=config.font_color, font=font)
 
-def draw_control_label(draw, control_config, label_config):
+def darw_control_text(draw, control_config, label_config):
 	font = ImageFont.truetype(font=resolve_font(label_config.font), size=label_config.font_size)
 	label_text = control_config.label
 	label_size = font.getsize(label_text)
@@ -65,6 +65,14 @@ def draw_control_label(draw, control_config, label_config):
 	x_pos = h_center - (label_size[0] / 2)
 	y_pos = control_config.y_pos - label_config.v_offset - label_size[1]
 	draw.text((x_pos, y_pos), label_text, fill=label_config.font_color, font=font)
+	if "value" in dir(control_config):
+		value_config = label_config.value
+		value_font = ImageFont.truetype(font=resolve_font(value_config.font), size=value_config.font_size)
+		value_text = control_config.value
+		value_size = value_font.getsize(value_text)
+		value_xpos = h_center - (value_size[0] / 2)
+		value_ypos = control_config.y_pos + value_config.size + value_config.v_offset	
+		draw.text((value_xpos, value_ypos), value_text, fill=value_config.font_color, font=value_font)
 
 # Helper methods
 

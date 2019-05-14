@@ -17,21 +17,27 @@ defaults:
       size: 80
       tick:
         width: 5
-        height: 25
+        height: 20
       ring:
         padding: 7
-        thickness: 4
+        thickness: 5
       label:
         font_size: 18
-        v_offset: 25
+        v_offset: 7
+      value:
+        font_size: 18
+        v_offset: -7
     px120:
       size: 120
       tick:
-        width: 10
-        height: 30
+        width: 8
+        height: 25
       ring:
-        padding: 7
-        thickness: 4
+        padding: 8
+        thickness: 6
       label:
         font_size: 22
-        v_offset: 30
+        v_offset: 10
+      value:
+        font_size: 18
+        v_offset: -8

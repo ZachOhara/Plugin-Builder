@@ -6,7 +6,7 @@
 # ---------------------------------------------------------
 
 GLOBAL_CONFIG = "global_config.yaml"
-SAMPLE_IMAGE = "sample_image.yaml"
+SAMPLE_IMAGE = "configs/sample_image.yaml"
 
 from base import configuration
 from base import generator
