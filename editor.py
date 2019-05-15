@@ -10,8 +10,6 @@ import tkinter as tk
 from base import configuration
 from base import generator
 
-DUMMYTEXT = "Blank\ntext\nconfiguration\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nhelper\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline"
-
 CONFIG_TEMPLATE = "config_template.yaml"
 
 def main():

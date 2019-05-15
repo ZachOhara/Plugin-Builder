@@ -18,3 +18,8 @@ controls:
     variant: px80
     x_pos: 150
     y_pos: 90
+  waveform:
+    type: waveform_box
+    variant: px80
+    x_pos: 150
+    y_pos: 10

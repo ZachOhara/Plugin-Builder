@@ -69,3 +69,12 @@ defaults:
       value:
         font_size: 16
         v_offset: -8
+  waveform_box:
+    body_color: "#0a0a0a"
+    corner_radius: 3
+    px80:
+      width: 80
+      height: 50
+      h_inset: 10
+      v_inset: 10
+      line_thickness: 6
