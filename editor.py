@@ -28,6 +28,7 @@ def generate_image(image_config_stream):
 class DisplayWindow:
 	def __init__(self, master):
 		master.bind("<Button-1>", self.update_image)
+		master.resizable(False, False)
 		self.config_win = ConfigurationWindow(master)
 		self.config_win.set_text(open(CONFIG_TEMPLATE).read())
 		#self.img_canvas = tk.Canvas(master, width=600, height=400)

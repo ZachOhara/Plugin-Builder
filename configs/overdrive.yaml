@@ -1,0 +1,27 @@
+name: Overdrive
+version: 1.1
+width: 340
+height: 160
+accent_color: "#F44336" # Material red 500
+controls:
+  drive:
+    label: Drive
+    value: "50.0%"
+    type: knob
+    variant: px80
+    x_pos: 30
+    y_pos: 30
+  tone:
+    label: Tone
+    value: "50.0%"
+    type: knob
+    variant: px80
+    x_pos: 130
+    y_pos: 30
+  volume:
+    label: Volume
+    value: "-0.0 dB"
+    type: knob
+    variant: px80
+    x_pos: 230
+    y_pos: 30

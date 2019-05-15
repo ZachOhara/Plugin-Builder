@@ -1,0 +1,13 @@
+name: NewConfiguration
+version: 1.0
+width: 400
+height: 300
+accent_color: "#F44336" # Material red 500
+controls:
+  example_control:
+    label: Example
+    value: "50.0%"
+    type: knob
+    variant: px80
+    x_pos: 160
+    y_pos: 110

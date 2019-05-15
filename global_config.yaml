@@ -1,4 +1,4 @@
-background_color: "#37474f" # Material blue-grey 800
+background_color: "#263238" # Material blue-grey 900
 font: Roboto-Regular
 font_color: "#FFFFFF"
 signature:
@@ -9,24 +9,52 @@ signature:
   h_offset: 10
 defaults:
   knob:
-    body_color: "#212121" # Material grey 900
-    ring_shade_opacity: 0.7 # between 0 and 1
+    body_color: "#0a0a0a"
+    ring_shade_opacity: 0.85 # between 0 and 1
     rotation_range: 270 # in degrees
     num_sprites: 128
+    px70:
+      size: 70
+      tick:
+        width: 5
+        height: 17
+      ring:
+        padding: 6
+        thickness: 4
+      label:
+        font_size: 16
+        v_offset: 8
+      value:
+        font_size: 15
+        v_offset: -7
     px80:
       size: 80
       tick:
         width: 5
-        height: 20
+        height: 19
+      ring:
+        padding: 6
+        thickness: 5
+      label:
+        font_size: 17
+        v_offset: 10
+      value:
+        font_size: 16
+        v_offset: -7
+    px100:
+      size: 100
+      tick:
+        width: 6
+        height: 22
       ring:
         padding: 7
         thickness: 5
       label:
-        font_size: 18
-        v_offset: 7
+        font_size: 19
+        v_offset: 10
       value:
-        font_size: 18
-        v_offset: -7
+        font_size: 16
+        v_offset: -8
     px120:
       size: 120
       tick:
@@ -36,8 +64,8 @@ defaults:
         padding: 8
         thickness: 6
       label:
-        font_size: 22
+        font_size: 20
         v_offset: 10
       value:
-        font_size: 18
+        font_size: 16
         v_offset: -8
