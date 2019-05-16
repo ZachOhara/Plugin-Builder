@@ -17,9 +17,10 @@ controls:
     type: knob
     variant: px80
     x_pos: 150
-    y_pos: 90
+    y_pos: 85
   waveform:
     type: waveform_box
-    variant: px80
-    x_pos: 150
+    value: sine
+    variant: px70
+    x_pos: 155
     y_pos: 10

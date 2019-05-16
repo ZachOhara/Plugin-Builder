@@ -26,13 +26,14 @@ def generate_image(config, mode=PREVIEW_MODE):
 			control_config.type).lookup(control_config.variant)
 		control_pos = (control_config.x_pos, control_config.y_pos)
 		if control_config.type == "knob":
-			knob_image = knobber.draw_knob(default_config, config.accent_color)
+			knob_image = knobber.draw_knob(default_config, control_config.accent_color)
 			image = composite_at_position(image, knob_image, control_pos)
 			draw_knob_text(image, control_config, default_config.label)
 		if control_config.type == "waveform_box":
-			box_image = waveformer.draw_waveform_box(default_config, config.accent_color)
+			box_image = waveformer.draw_waveform_box(default_config)
 			image = composite_at_position(image, box_image, (control_pos))
-
+			wave_image = waveformer.draw_wave(default_config, control_config.accent_color, control_config.value)
+			image = composite_at_position(image, wave_image, control_pos)
 	return image
 
 # Internal code

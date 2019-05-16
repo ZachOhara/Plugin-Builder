@@ -72,9 +72,14 @@ defaults:
   waveform_box:
     body_color: "#0a0a0a"
     corner_radius: 3
+    line_thickness: 3
+    px70:
+      width: 70
+      height: 45
+      h_inset: 12
+      v_inset: 12
     px80:
       width: 80
       height: 50
-      h_inset: 10
-      v_inset: 10
-      line_thickness: 6
+      h_inset: 12
+      v_inset: 12
