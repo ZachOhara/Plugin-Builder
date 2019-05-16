@@ -25,12 +25,11 @@ def generate_image(image_config_stream):
 
 class DisplayWindow:
 	def __init__(self, master):
+		master.title("Preview")
 		master.bind("<Button-1>", self.update_image)
 		master.resizable(False, False)
 		self.config_win = ConfigurationWindow(master)
 		self.config_win.set_text(open(CONFIG_TEMPLATE).read())
-		#self.img_canvas = tk.Canvas(master, width=600, height=400)
-		#self.img_canvas.pack()
 		self.img_label = tk.Label(master)
 		self.update_image(None)
 		self.img_label.pack()
@@ -38,15 +37,17 @@ class DisplayWindow:
 	def update_image(self, event):
 		image = generate_image(self.config_win.get_text())
 		tk_image = ImageTk.PhotoImage(image)
-		#self.img_canvas.create_image(10, 10, image=tk_image)
 		self.img_label.configure(image=tk_image)
 		self.img_label.image = tk_image
 
 class ConfigurationWindow:
 	def __init__(self, master):
+		# Init window
 		self.window = tk.Toplevel(master)
+		self.window.title("Configuration")
 		self.window.protocol("WM_DELETE_WINDOW", master.destroy)
 		self.window.resizable(False, True)
+		# Create objects
 		self.scrollbar = tk.Scrollbar(self.window)
 		self.textbox = tk.Text(self.window, height=30, width=70)
 		# Init scrollbar
