@@ -9,17 +9,17 @@ from PIL import Image, ImageDraw
 
 import math
 
-SCALE_FACTOR = 4 # must be >= 1 ; higher for more antialiasing, lower for faster
+from base import graphics
 
 # Primary methods
 
-def draw_display_box(default_config, box_config):
-	image = blank_image(box_config)
+def draw_display_box(default_config, size):
+	image = graphics.blank_image(size)
 	draw = ImageDraw.Draw(image)
-	draw.rectangle((0, 0, scaled(box_config.width), scaled(box_config.height)),
+	draw.rectangle((0, 0, graphics.scale(size[0]), graphics.scale(size[1])),
 		fill=default_config.body_color)
-	round_corners(image, scaled(default_config.corner_radius))
-	image = image.resize((box_config.width, box_config.height), resample=Image.BICUBIC)
+	round_corners(image, graphics.scale(default_config.corner_radius))
+	image = graphics.downsize_image(image)
 	return image
 
 # Internal code
@@ -32,11 +32,3 @@ def round_corners(image, radius):
 			image.putpixel((x, image.height - i - 1), (0, 0, 0, 0))
 			image.putpixel((image.width - x - 1, i), (0, 0, 0, 0))
 			image.putpixel((image.width - x - 1, image.height - i - 1), (0, 0, 0, 0))
-
-# Helper methods
-
-def blank_image(box_config):
-	return Image.new("RGBA", (scaled(box_config.width), scaled(box_config.height)), color=(0, 0, 0, 0))
-
-def scaled(n):
-	return SCALE_FACTOR * n

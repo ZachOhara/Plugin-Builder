@@ -7,7 +7,7 @@
 
 from PIL import Image, ImageDraw
 
-SCALE_FACTOR = 4 # must be >= 1 ; higher for more antialiasing, lower for faster
+from base import graphics
 
 # Primary methods
 
@@ -21,16 +21,16 @@ def build_sprite_sheet(knob_config, accent_color):
 
 def create_sheet(config, accent_color, rotations):
 	# Setup
-	sheet = Image.new("RGBA", (config.size, config.size * len(rotations)))
+	sheet = graphics.blank_image((config.size, config.size * len(rotations)), prescaled=True)
 	ring_bounds = calculate_ring_mask_bounds(config)
 	shade_color = (0, 0, 0, int(255 * config.ring_shade_opacity))
 	# Draw some shapes
 	body_mask = create_body_mask(config)
-	body_image = apply_color(config.body_color, body_mask)
+	body_image = graphics.apply_color(body_mask, config.body_color)
 	tick_mask = create_tick_mask(config, body_mask)
-	tick_image = apply_color(accent_color, tick_mask)
+	tick_image = graphics.apply_color(tick_mask, accent_color)
 	ring_mask = create_ring_mask(config, ring_bounds)
-	ring_image = apply_color(accent_color, ring_mask)
+	ring_image = graphics.apply_color(ring_mask, accent_color)
 	# Now draw the individual sprites
 	for i in range(len(rotations)):
 		# Rotate the tick to this rotation (negative, since rotate() goes CCW)
@@ -39,11 +39,11 @@ def create_sheet(config, accent_color, rotations):
 		sprite = Image.alpha_composite(body_image, tick_rotated)
 		# Shade the ring and composite it in
 		shade_mask = create_shade_mask(config, ring_bounds, rotations[i], ring_mask)
-		shade_image = apply_color(shade_color, shade_mask)
+		shade_image = graphics.apply_color(shade_mask, shade_color)
 		ring_shaded = Image.alpha_composite(ring_image, shade_image)
 		sprite = Image.alpha_composite(sprite, ring_shaded)
 		# Scale down to the output size
-		sprite = sprite.resize((config.size, config.size), resample=Image.BICUBIC)
+		sprite = graphics.downsize_image(sprite)
 		# Paste onto the sheet
 		sheet.paste(sprite, box=(0, i * config.size))
 	return sheet
@@ -51,23 +51,23 @@ def create_sheet(config, accent_color, rotations):
 # Shape-drawing methods
 
 def create_body_mask(config):
-	mask = blank_mask(scaled(config.size))
+	mask = graphics.blank_mask(config.size)
 	draw = ImageDraw.Draw(mask)
-	cen = scaled(center(config))
-	radius = scaled(body_radius(config))
+	cen = graphics.scale(center(config))
+	radius = graphics.scale(body_radius(config))
 	top = cen - radius
 	bottom = cen + radius
 	draw.ellipse((top, top, bottom, bottom), fill=(255))
 	return mask
 
 def create_tick_mask(config, body_mask):
-	mask = blank_mask(scaled(config.size))
+	mask = graphics.blank_mask(config.size)
 	draw = ImageDraw.Draw(mask)
 	# Calculate rectangular bounds
-	left_edge = scaled(center(config) - (config.tick.width / 2))
-	right_edge = scaled(center(config) + (config.tick.width / 2))
-	top_edge = scaled(center(config) - body_radius(config))
-	bottom_edge = top_edge + scaled(config.tick.height)
+	left_edge = graphics.scale(center(config) - (config.tick.width / 2))
+	right_edge = graphics.scale(center(config) + (config.tick.width / 2))
+	top_edge = graphics.scale(center(config) - body_radius(config))
+	bottom_edge = top_edge + graphics.scale(config.tick.height)
 	# Draw the tick rectangle
 	draw.rectangle([left_edge, top_edge, right_edge, bottom_edge], fill=(255))
 	# Now round off the top using the body mask
@@ -79,7 +79,7 @@ def create_tick_mask(config, body_mask):
 	return mask
 
 def create_ring_mask(config, ring_bounds):
-	mask = blank_mask(scaled(config.size))
+	mask = graphics.blank_mask(config.size)
 	draw = ImageDraw.Draw(mask)
 	# Extract the bounds we need
 	inner_bounds, outer_bounds = ring_bounds[0:2]
@@ -93,7 +93,7 @@ def create_ring_mask(config, ring_bounds):
 	return mask
 
 def create_shade_mask(config, ring_bounds, degrees, ring_mask):
-	mask = blank_mask(scaled(config.size))
+	mask = graphics.blank_mask(config.size)
 	draw = ImageDraw.Draw(mask)
 	# Extract the bounds we need
 	buffered_bounds = ring_bounds[2]
@@ -103,14 +103,14 @@ def create_shade_mask(config, ring_bounds, degrees, ring_mask):
 	# Draw the shaded portion
 	draw.pieslice(buffered_bounds, start_angle, end_angle, fill=(255))
 	# Carve out the middle by compositing with the ring mask, then return
-	return Image.composite(mask, blank_mask(scaled(config.size)), ring_mask)
+	return Image.composite(mask, graphics.blank_mask(config.size), ring_mask)
 
 def calculate_ring_mask_bounds(config):
 	# Cache important values
-	inner_radius = scaled(body_radius(config) + config.ring.padding)
-	outer_radius = inner_radius + scaled(config.ring.thickness)
-	cen = scaled(center(config))
-	shade_buffer = SCALE_FACTOR * 1 # to prevent visual artifacts, 1 is enough
+	inner_radius = graphics.scale(body_radius(config) + config.ring.padding)
+	outer_radius = inner_radius + graphics.scale(config.ring.thickness)
+	cen = graphics.scale(center(config))
+	shade_buffer = graphics.scale(1) # to prevent visual artifacts, 1 is enough
 	# Run the math
 	top_inn_bound = cen - inner_radius
 	bot_inn_bound = cen + inner_radius
@@ -124,23 +124,7 @@ def calculate_ring_mask_bounds(config):
 	buffered_bounds = (top_buf_bound, top_buf_bound, bot_buf_bound, bot_buf_bound)
 	return inner_bounds, outer_bounds, buffered_bounds
 
-# Image helper methods
-
-def blank_mask(size):
-	return Image.new(mode="L", size=(size, size), color=(0))
-
-def blank_image(size, default_color=(0, 0, 0, 0)):
-	return Image.new(mode="RGBA", size=(size, size), color=default_color)
-
-def apply_color(color, mask):
-	base = blank_image(mask.width)
-	color = blank_image(mask.width, default_color=color)
-	return Image.composite(color, base, mask)
-
 # Math helper methods
-
-def scaled(n):
-	return n * SCALE_FACTOR
 
 def center(config):
 	return config.size / 2

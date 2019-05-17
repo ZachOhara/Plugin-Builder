@@ -104,7 +104,7 @@ defaults:
         v_offset: -8
   waveform_box:
     body_color: "#0a0a0a"
-    corner_radius: 3
+    base_graphic: displaybox
     line_thickness: 3
     px70:
       width: 70

@@ -30,7 +30,8 @@ def generate_image(config, mode=PREVIEW_MODE):
 			image = composite_at_position(image, knob_image, control_pos)
 			draw_knob_text(image, control_config, default_config.label)
 		if control_config.type == "waveform_box":
-			box_image = waveformer.draw_waveform_box(default_config)
+			#box_image = waveformer.draw_waveform_box(default_config)
+			box_image = displayboxer.draw_display_box(default_config.graphic_defaults.lookup(default_config.base_graphic), (default_config.width, default_config.height))
 			image = composite_at_position(image, box_image, (control_pos))
 			wave_image = waveformer.draw_wave(default_config, control_config.accent_color, control_config.value)
 			image = composite_at_position(image, wave_image, control_pos)
@@ -39,7 +40,7 @@ def generate_image(config, mode=PREVIEW_MODE):
 			graphic_config = config.graphics.lookup(graphic_name)
 			default_config = graphic_config.graphic_defaults.lookup(graphic_config.type)
 			if graphic_config.type == "displaybox":
-				graphic_image = displayboxer.draw_display_box(default_config, graphic_config)
+				graphic_image = displayboxer.draw_display_box(default_config, (graphic_config.width, graphic_config.height))
 				image = composite_at_position(image, graphic_image,
 					(graphic_config.x_pos, graphic_config.y_pos))
 	return image
