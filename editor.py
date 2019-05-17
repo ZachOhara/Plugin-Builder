@@ -10,7 +10,7 @@ import tkinter as tk
 from base import configuration
 from base import generator
 
-CONFIG_TEMPLATE = "config_template.yaml"
+CONFIG_TEMPLATE = "configs/_config_template.yaml"
 
 def main():
 	root = tk.Tk()
@@ -20,7 +20,7 @@ def main():
 def generate_image(image_config_stream):
 	global_config_stream = open(configuration.GLOBAL_CONFIG_PATH)
 	config = configuration.load_configuration(global_config_stream, image_config_stream)
-	image = generator.generate_image(config, mode=generator.PREVIEW_MODE)
+	image = generator.generate_image(config, render_mode=False)
 	return image
 
 class DisplayWindow:

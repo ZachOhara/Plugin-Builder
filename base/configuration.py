@@ -28,7 +28,11 @@ class Configuration:
 				self.raw_data[key] = Configuration(self, self.raw_data[key])
 
 	def lookup(self, name):
-		return self.__getattr__(name)
+		if "." in name:
+			i = name.find(".")
+			return self.__getattr__(name[:i]).lookup(name[i + 1:])
+		else:
+			return self.__getattr__(name)
 
 	def __getattr__(self, name):
 		try:

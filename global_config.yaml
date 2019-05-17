@@ -2,9 +2,9 @@ background_color: "#263238" # Material blue-grey 900
 font: Roboto-Regular
 font_color: "#FFFFFF"
 signature:
-  font_size: 14
   text_1: OZ-DSP v@version
   text_2: ZachOhara.com
+  font_size: 14
   width_threshold: 230
   one_line: # When the texts are displayed in the bottom corners
     v_offset: 10
@@ -12,11 +12,15 @@ signature:
   two_lines: # When the texts are stacked in the bottom center
     v_offset_1: 25
     v_offset_2: 10
-defaults:
+object_defaults:
+  displaybox:
+    body_color: "#0a0a0a"
+    corner_radius: 3
   knob:
     body_color: "#0a0a0a"
     ring_shade_opacity: 0.85 # between 0 and 1
     rotation_range: 270 # in degrees
+    default_value: 0 # degrees clockwise of center
     num_sprites: 128
     px50:
       size: 50
@@ -28,7 +32,7 @@ defaults:
         thickness: 4
       label:
         font_size: 14
-        v_offset: 7
+        v_offset: 20
       value:
         font_size: 13
         v_offset: -5
@@ -42,7 +46,7 @@ defaults:
         thickness: 4
       label:
         font_size: 15
-        v_offset: 7
+        v_offset: 22
       value:
         font_size: 14
         v_offset: -5
@@ -56,7 +60,7 @@ defaults:
         thickness: 5
       label:
         font_size: 16
-        v_offset: 8
+        v_offset: 24
       value:
         font_size: 15
         v_offset: -7
@@ -70,7 +74,7 @@ defaults:
         thickness: 5
       label:
         font_size: 17
-        v_offset: 10
+        v_offset: 25
       value:
         font_size: 16
         v_offset: -7
@@ -84,7 +88,7 @@ defaults:
         thickness: 6
       label:
         font_size: 19
-        v_offset: 10
+        v_offset: 27
       value:
         font_size: 16
         v_offset: -8
@@ -98,14 +102,15 @@ defaults:
         thickness: 6
       label:
         font_size: 20
-        v_offset: 10
+        v_offset: 30
       value:
         font_size: 16
         v_offset: -8
   waveform_box:
     body_color: "#0a0a0a"
-    base_graphic: displaybox
+    graphic_class: displaybox
     line_thickness: 3
+    default_value: sine
     px70:
       width: 70
       height: 45
@@ -116,7 +121,3 @@ defaults:
       height: 50
       h_inset: 12
       v_inset: 12
-graphic_defaults:
-  displaybox:
-    body_color: "#0a0a0a"
-    corner_radius: 3

@@ -3,60 +3,52 @@ version: 1.1
 width: 320
 height: 350
 accent_color: "#4CAF50" # Material green 500
-controls:
+objects:
   attack:
+    class: knob.px60
     label: Attack
     value: "100 ms"
-    type: knob
-    variant: px60
     x_pos: 16
     y_pos: 30
   decay:
+    class: knob.px60
     label: Decay
     value: "100 ms"
-    type: knob
-    variant: px60
     x_pos: 92
     y_pos: 30
   sustain:
+    class: knob.px60
     label: Sustain
     value: "50.0%"
-    type: knob
-    variant: px60
     x_pos: 168
     y_pos: 30
   release:
+    class: knob.px60
     label: Release
     value: "100 ms"
-    type: knob
-    variant: px60
     x_pos: 244
     y_pos: 30
-  attackshape:
+  attack_shape:
+    class: knob.px50
     label: A. Shape
     value: "0.0"
-    type: knob
-    variant: px50
     x_pos: 60
     y_pos: 130
-  decayshape:
+  decay_shape:
+    class: knob.px50
     label: D. Shape
     value: "0.0"
-    type: knob
-    variant: px50
     x_pos: 135
     y_pos: 130
-  releaseshape:
+  release_shape:
+    class: knob.px50
     label: R. Shape
     value: "0.0"
-    type: knob
-    variant: px50
     x_pos: 210
     y_pos: 130
-graphics:
   envelope_display:
-    type: displaybox
-    x_pos: 15
-    y_pos: 200
+    class: displaybox
     width: 290
     height: 120
+    x_pos: 15
+    y_pos: 200

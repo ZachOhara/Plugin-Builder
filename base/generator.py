@@ -14,35 +14,33 @@ from base import displayboxer, knobber, waveformer
 
 # Primary methods
 
-PREVIEW_MODE = "preview_mode"
-RENDER_MODE = "render_mode"
-
-def generate_image(config, mode=PREVIEW_MODE):
+def generate_image(config, render_mode=False):
 	image = build_base_image(config)
 	draw_signature_text(image, config)
-	for control_name in dir(config.controls):
-		control_config = config.controls.lookup(control_name)
-		default_config = control_config.defaults.lookup(
-			control_config.type).lookup(control_config.variant)
-		control_pos = (control_config.x_pos, control_config.y_pos)
-		if control_config.type == "knob":
-			knob_image = knobber.draw_knob(default_config, control_config.accent_color)
-			image = composite_at_position(image, knob_image, control_pos)
-			draw_knob_text(image, control_config, default_config.label)
-		if control_config.type == "waveform_box":
-			#box_image = waveformer.draw_waveform_box(default_config)
-			box_image = displayboxer.draw_display_box(default_config.graphic_defaults.lookup(default_config.base_graphic), (default_config.width, default_config.height))
-			image = composite_at_position(image, box_image, (control_pos))
-			wave_image = waveformer.draw_wave(default_config, control_config.accent_color, control_config.value)
-			image = composite_at_position(image, wave_image, control_pos)
-	if "graphics" in dir(config):
-		for graphic_name in (dir(config.graphics)):
-			graphic_config = config.graphics.lookup(graphic_name)
-			default_config = graphic_config.graphic_defaults.lookup(graphic_config.type)
-			if graphic_config.type == "displaybox":
-				graphic_image = displayboxer.draw_display_box(default_config, (graphic_config.width, graphic_config.height))
-				image = composite_at_position(image, graphic_image,
-					(graphic_config.x_pos, graphic_config.y_pos))
+	for obj_name in dir(config.objects):
+		obj_config = config.objects.lookup(obj_name)
+		obj_class = obj_config.lookup("class") # 'class' is a Python reserved work
+		obj_defaults = config.object_defaults.lookup(obj_class)
+		obj_position = (obj_config.x_pos, obj_config.y_pos)
+		# Displaybox
+		if obj_class.startswith("displaybox"):
+			box_image = displayboxer.draw_display_box(obj_defaults, (obj_config.width, obj_config.height))
+			image = composite_at_position(image, box_image, obj_position)
+		# Knob
+		if obj_class.startswith("knob"):
+			draw_knob_text(image, obj_config, obj_defaults.label, draw_value=(not render_mode))
+			if not render_mode:
+				knob_image = knobber.draw_knob(obj_defaults, obj_config.accent_color, obj_defaults.default_value)
+				image = composite_at_position(image, knob_image, obj_position)
+		# Waveform_box
+		if obj_class.startswith("waveform_box"):
+			box_image = displayboxer.draw_display_box(
+				config.object_defaults.lookup(obj_defaults.graphic_class),
+				(obj_defaults.width, obj_defaults.height))
+			image = composite_at_position(image, box_image, obj_position)
+			if not render_mode:
+				wave_image = waveformer.draw_wave(obj_defaults, obj_config.accent_color, obj_defaults.default_value)
+				image = composite_at_position(image, wave_image, obj_position)
 	return image
 
 # Internal code
@@ -75,16 +73,16 @@ def draw_signature_text(image, config):
 	draw.text(textpos_2, text_2, fill=config.font_color, font=font)
 	return image # this is optional, because it's the same object
 
-def draw_knob_text(image, control_config, label_config):
+def draw_knob_text(image, control_config, label_config, draw_value=True):
 	draw = ImageDraw.Draw(image)
 	font = ImageFont.truetype(font=resolve_font(label_config.font), size=label_config.font_size)
 	label_text = control_config.label
 	label_size = font.getsize(label_text)
 	h_center = control_config.x_pos + (label_config.size / 2)
 	x_pos = h_center - (label_size[0] / 2)
-	y_pos = control_config.y_pos - label_config.v_offset - label_size[1]
+	y_pos = control_config.y_pos - label_config.v_offset
 	draw.text((x_pos, y_pos), label_text, fill=label_config.font_color, font=font)
-	if "value" in dir(control_config):
+	if draw_value and "value" in dir(control_config):
 		value_config = label_config.value
 		value_font = ImageFont.truetype(font=resolve_font(value_config.font), size=value_config.font_size)
 		value_text = control_config.value

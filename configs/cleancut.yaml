@@ -3,11 +3,10 @@ version: 1.1
 width: 150
 height: 220
 accent_color: "#FFFFFF"
-controls:
+objects:
   volume:
+    class: knob.px120
     label: Volume
     value: "-0.0 dB"
-    type: knob
-    variant: px120
     x_pos: 15
     y_pos: 40

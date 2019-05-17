@@ -3,24 +3,20 @@ version: 1.1
 width: 250
 height: 210
 accent_color: "#009688" # Material teal 500
-controls:
+objects:
   pitch:
+    class: knob.px100
     label: Pitch
     value: "440 hz"
-    type: knob
-    variant: px100
     x_pos: 26
     y_pos: 50
   volume:
+    class: knob.px80
     label: Volume
     value: "-0.0 dB"
-    type: knob
-    variant: px80
     x_pos: 150
     y_pos: 85
   waveform:
-    type: waveform_box
-    value: sine
-    variant: px70
+    class: waveform_box.px70
     x_pos: 155
     y_pos: 10
