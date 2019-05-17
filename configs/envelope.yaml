@@ -1,0 +1,62 @@
+name: Envelope
+version: 1.1
+width: 320
+height: 350
+accent_color: "#4CAF50" # Material green 500
+controls:
+  attack:
+    label: Attack
+    value: "100 ms"
+    type: knob
+    variant: px60
+    x_pos: 16
+    y_pos: 30
+  decay:
+    label: Decay
+    value: "100 ms"
+    type: knob
+    variant: px60
+    x_pos: 92
+    y_pos: 30
+  sustain:
+    label: Sustain
+    value: "50.0%"
+    type: knob
+    variant: px60
+    x_pos: 168
+    y_pos: 30
+  release:
+    label: Release
+    value: "100 ms"
+    type: knob
+    variant: px60
+    x_pos: 244
+    y_pos: 30
+  attackshape:
+    label: A. Shape
+    value: "0.0"
+    type: knob
+    variant: px50
+    x_pos: 60
+    y_pos: 130
+  decayshape:
+    label: D. Shape
+    value: "0.0"
+    type: knob
+    variant: px50
+    x_pos: 135
+    y_pos: 130
+  releaseshape:
+    label: R. Shape
+    value: "0.0"
+    type: knob
+    variant: px50
+    x_pos: 210
+    y_pos: 130
+graphics:
+  envelope_display:
+    type: displaybox
+    x_pos: 15
+    y_pos: 200
+    width: 290
+    height: 120
