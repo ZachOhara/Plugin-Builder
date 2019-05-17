@@ -10,7 +10,7 @@ import yaml
 
 import os
 
-from base import knobber, waveformer
+from base import displayboxer, knobber, waveformer
 
 # Primary methods
 
@@ -34,6 +34,14 @@ def generate_image(config, mode=PREVIEW_MODE):
 			image = composite_at_position(image, box_image, (control_pos))
 			wave_image = waveformer.draw_wave(default_config, control_config.accent_color, control_config.value)
 			image = composite_at_position(image, wave_image, control_pos)
+	if "graphics" in dir(config):
+		for graphic_name in (dir(config.graphics)):
+			graphic_config = config.graphics.lookup(graphic_name)
+			default_config = graphic_config.graphic_defaults.lookup(graphic_config.type)
+			if graphic_config.type == "displaybox":
+				graphic_image = displayboxer.draw_display_box(default_config, graphic_config)
+				image = composite_at_position(image, graphic_image,
+					(graphic_config.x_pos, graphic_config.y_pos))
 	return image
 
 # Internal code
@@ -44,16 +52,26 @@ def build_base_image(config):
 def draw_signature_text(image, config):
 	draw = ImageDraw.Draw(image)
 	font = ImageFont.truetype(font=resolve_font(config.font), size=config.signature.font_size)
-	left_text = config.signature.left_text.replace("@version", str(config.version))
-	right_text = config.signature.right_text
-	left_textsize = font.getsize(left_text)
-	right_textsize = font.getsize(right_text)
-	left_textpos = (config.signature.h_offset,
-		config.height - config.signature.v_offset - left_textsize[1])
-	right_textpos = (config.width - config.signature.h_offset - right_textsize[0],
-		config.height - config.signature.v_offset - right_textsize[1])
-	draw.text(left_textpos, left_text, fill=config.font_color, font=font)
-	draw.text(right_textpos, right_text, fill=config.font_color, font=font)
+	text_1 = config.signature.text_1.replace("@version", str(config.version))
+	text_2 = config.signature.text_2
+	textsize_1 = font.getsize(text_1)
+	textsize_2 = font.getsize(text_2)
+	textpos_1 = None
+	textpos_2 = None
+	if config.width >= config.signature.width_threshold:
+		arr_config = config.signature.one_line # shorthand
+		textpos_1 = (arr_config.h_offset,
+			config.height - arr_config.v_offset - textsize_1[1])
+		textpos_2 = (config.width - arr_config.h_offset - textsize_2[0],
+			config.height - arr_config.v_offset - textsize_2[1])
+	else:
+		arr_config = config.signature.two_lines # shorthand
+		textpos_1 = ((config.width / 2) - (textsize_1[0] / 2),
+			config.height - arr_config.v_offset_1 - textsize_1[1])
+		textpos_2 = ((config.width / 2) - (textsize_2[0] / 2),
+			config.height - arr_config.v_offset_2 - textsize_2[1])
+	draw.text(textpos_1, text_1, fill=config.font_color, font=font)
+	draw.text(textpos_2, text_2, fill=config.font_color, font=font)
 	return image # this is optional, because it's the same object
 
 def draw_knob_text(image, control_config, label_config):

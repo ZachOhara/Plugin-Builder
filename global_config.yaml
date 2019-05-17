@@ -3,24 +3,57 @@ font: Roboto-Regular
 font_color: "#FFFFFF"
 signature:
   font_size: 14
-  left_text: OZ-DSP v@version
-  right_text: ZachOhara.com
-  v_offset: 10
-  h_offset: 10
+  text_1: OZ-DSP v@version
+  text_2: ZachOhara.com
+  width_threshold: 230
+  one_line: # When the texts are displayed in the bottom corners
+    v_offset: 10
+    h_offset: 10
+  two_lines: # When the texts are stacked in the bottom center
+    v_offset_1: 25
+    v_offset_2: 10
 defaults:
   knob:
     body_color: "#0a0a0a"
     ring_shade_opacity: 0.85 # between 0 and 1
     rotation_range: 270 # in degrees
     num_sprites: 128
+    px50:
+      size: 50
+      tick:
+        width: 3
+        height: 12
+      ring:
+        padding: 4
+        thickness: 4
+      label:
+        font_size: 14
+        v_offset: 7
+      value:
+        font_size: 13
+        v_offset: -5
+    px60:
+      size: 60
+      tick:
+        width: 4
+        height: 14
+      ring:
+        padding: 4
+        thickness: 4
+      label:
+        font_size: 15
+        v_offset: 7
+      value:
+        font_size: 14
+        v_offset: -5
     px70:
       size: 70
       tick:
         width: 5
         height: 17
       ring:
-        padding: 6
-        thickness: 4
+        padding: 5
+        thickness: 5
       label:
         font_size: 16
         v_offset: 8
@@ -44,11 +77,11 @@ defaults:
     px100:
       size: 100
       tick:
-        width: 6
-        height: 22
+        width: 7
+        height: 21
       ring:
-        padding: 7
-        thickness: 5
+        padding: 6
+        thickness: 6
       label:
         font_size: 19
         v_offset: 10
@@ -59,9 +92,9 @@ defaults:
       size: 120
       tick:
         width: 8
-        height: 25
+        height: 24
       ring:
-        padding: 8
+        padding: 6
         thickness: 6
       label:
         font_size: 20
@@ -83,3 +116,7 @@ defaults:
       height: 50
       h_inset: 12
       v_inset: 12
+graphic_defaults:
+  displaybox:
+    body_color: "#0a0a0a"
+    corner_radius: 3
