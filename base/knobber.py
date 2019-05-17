@@ -11,8 +11,8 @@ from base import graphics
 
 # Primary methods
 
-def draw_knob(knob_config, accent_color, rotation):
-	return create_sheet(knob_config, accent_color, [rotation])
+def draw_knob(knob_config, accent_color):
+	return create_sheet(knob_config, accent_color, [knob_config.default_value])
 
 def build_sprite_sheet(knob_config, accent_color):
 	return create_sheet(knob_config, accent_color, build_rotation_list(knob_config))

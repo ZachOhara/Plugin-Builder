@@ -24,13 +24,15 @@ def generate_image(config, render_mode=False):
 		obj_position = (obj_config.x_pos, obj_config.y_pos)
 		# Displaybox
 		if obj_class.startswith("displaybox"):
-			box_image = displayboxer.draw_display_box(obj_defaults, (obj_config.width, obj_config.height))
+			box_image = displayboxer.draw_display_box(obj_defaults,
+				(obj_config.width, obj_config.height))
 			image = composite_at_position(image, box_image, obj_position)
 		# Knob
 		if obj_class.startswith("knob"):
-			draw_knob_text(image, obj_config, obj_defaults.label, draw_value=(not render_mode))
+			draw_knob_text(image, obj_config, obj_defaults.label,
+				draw_value=(not render_mode))
 			if not render_mode:
-				knob_image = knobber.draw_knob(obj_defaults, obj_config.accent_color, obj_defaults.default_value)
+				knob_image = knobber.draw_knob(obj_defaults, obj_config.accent_color)
 				image = composite_at_position(image, knob_image, obj_position)
 		# Waveform_box
 		if obj_class.startswith("waveform_box"):
@@ -39,7 +41,8 @@ def generate_image(config, render_mode=False):
 				(obj_defaults.width, obj_defaults.height))
 			image = composite_at_position(image, box_image, obj_position)
 			if not render_mode:
-				wave_image = waveformer.draw_wave(obj_defaults, obj_config.accent_color, obj_defaults.default_value)
+				wave_image = waveformer.draw_wave(
+					obj_defaults, obj_config.accent_color, obj_defaults.default_value)
 				image = composite_at_position(image, wave_image, obj_position)
 	return image
 
@@ -50,7 +53,8 @@ def build_base_image(config):
 
 def draw_signature_text(image, config):
 	draw = ImageDraw.Draw(image)
-	font = ImageFont.truetype(font=resolve_font(config.font), size=config.signature.font_size)
+	font = ImageFont.truetype(
+		font=resolve_font(config.font), size=config.signature.font_size)
 	text_1 = config.signature.text_1.replace("@version", str(config.version))
 	text_2 = config.signature.text_2
 	textsize_1 = font.getsize(text_1)
@@ -84,19 +88,20 @@ def draw_knob_text(image, control_config, label_config, draw_value=True):
 	draw.text((x_pos, y_pos), label_text, fill=label_config.font_color, font=font)
 	if draw_value and "value" in dir(control_config):
 		value_config = label_config.value
-		value_font = ImageFont.truetype(font=resolve_font(value_config.font), size=value_config.font_size)
+		value_font = ImageFont.truetype(
+			font=resolve_font(value_config.font), size=value_config.font_size)
 		value_text = control_config.value
 		value_size = value_font.getsize(value_text)
 		value_xpos = h_center - (value_size[0] / 2)
 		value_ypos = control_config.y_pos + value_config.size + value_config.v_offset	
 		draw.text((value_xpos, value_ypos), value_text, fill=value_config.font_color, font=value_font)
 
+# Helper methods
+
 def composite_at_position(image1, image2, position):
 	temp_image = Image.new(mode="RGBA", size=image1.size, color=(0, 0, 0, 0))
 	temp_image.paste(image2, box=position)
 	return Image.alpha_composite(image1, temp_image)
-
-# Helper methods
 
 def resolve_font(configured_font):
 	return os.path.sep.join((os.getcwd(), "res", configured_font + ".ttf"))
