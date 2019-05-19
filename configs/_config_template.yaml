@@ -10,3 +10,12 @@ objects:
     value: "50.0%"
     x_pos: 160
     y_pos: 110
+parameters:
+  example_control:
+    hostname: Example
+    template: percentage
+processors:
+  example_processor:
+    class: audio.VolumeProcessor
+    parameters:
+      loudness: example_control

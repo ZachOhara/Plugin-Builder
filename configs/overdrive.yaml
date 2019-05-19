@@ -22,3 +22,22 @@ objects:
     value: "-0.0 dB"
     x_pos: 230
     y_pos: 30
+parameters:
+  drive:
+    hostname: Drive
+    template: percentage
+  tone:
+    hostname: Tone
+    template: percentage
+  volume:
+    hostname: Volume
+    template: volume_reduction
+processors:
+  tone_processor:
+    class: audio.ToneMixProcessor
+    parameters:
+      mix_percent: tone
+  volume_processor:
+    class: audio.VolumeProcessor
+    parameters:
+      decibels: volume

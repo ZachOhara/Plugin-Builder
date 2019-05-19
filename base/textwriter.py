@@ -114,10 +114,11 @@ class ProcessorInfo:
 		self.type = proc_config.lookup("class").split(".")[-1]
 		self.include = self.resolve_include_path(proc_config.lookup("class"), self.type)
 		self.params = []
-		for param_name in dir(proc_config.parameters):
-			param_id = get_param_id_str(proc_config.parameters.lookup(param_name))
-			type_index = "k" + camelcase(param_name) + "Param"
-			self.params.append((param_id, type_index))
+		if "parameters" in dir(proc_config):
+			for param_name in dir(proc_config.parameters):
+				param_id = get_param_id_str(proc_config.parameters.lookup(param_name))
+				type_index = "k" + camelcase(param_name) + "Param"
+				self.params.append((param_id, type_index))
 
 	def resolve_include_path(self, classpath, type):
 		folder = "/".join(classpath.split(".")[:-1])

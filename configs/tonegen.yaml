@@ -36,7 +36,7 @@ processors:
     parameters:
       Frequency: pitch
       Waveform: waveform
-  volumeProcessor:
+  volume_processor:
     class: audio.VolumeProcessor
     parameters:
-      Decibels: volume
+      decibels: volume

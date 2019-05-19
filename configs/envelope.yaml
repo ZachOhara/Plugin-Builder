@@ -4,25 +4,25 @@ width: 320
 height: 350
 accent_color: "#4CAF50" # Material green 500
 objects:
-  attack:
+  attack_time:
     class: knob.px60
     label: Attack
     value: "100 ms"
     x_pos: 16
     y_pos: 30
-  decay:
+  decay_time:
     class: knob.px60
     label: Decay
     value: "100 ms"
     x_pos: 92
     y_pos: 30
-  sustain:
+  sustain_level:
     class: knob.px60
     label: Sustain
     value: "50.0%"
     x_pos: 168
     y_pos: 30
-  release:
+  release_time:
     class: knob.px60
     label: Release
     value: "100 ms"
@@ -52,3 +52,40 @@ objects:
     height: 120
     x_pos: 15
     y_pos: 200
+parameters:
+  attack_time:
+    hostname: Attack
+    template: envelope_time
+  decay_time:
+    hostname: Decay
+    template: envelope_time
+  sustain_level:
+    hostname: Sustain
+    template: percentage
+  release_time:
+    hostname: Release
+    template: envelope_time
+  attack_shape:
+    hostname: Attack Shape
+    template: envelope_shape
+  decay_shape:
+    hostname: Decay Shape
+    template: envelope_shape
+  release_shape:
+    hostname: Release Shape
+    template: envelope_shape
+processors:
+  oscillator:
+    class: audio.Oscillator
+  tuning_processor:
+    class: midi.TuningProcessor
+  envelope_processor:
+    class: audio.EnvelopeProcessor
+    parameters:
+      attack_time: attack_time
+      decay_time: decay_time
+      sustain_level: sustain_level
+      release_time: release_time
+      attack_shape: attack_shape
+      decay_shape: decay_shape
+      release_shape: release_shape

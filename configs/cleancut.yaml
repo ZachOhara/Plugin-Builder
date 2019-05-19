@@ -10,3 +10,12 @@ objects:
     value: "-0.0 dB"
     x_pos: 15
     y_pos: 40
+parameters:
+  volume:
+    hostname: Volume
+    template: volume_reduction
+processors:
+  volume_processor:
+    class: audio.VolumeProcessor
+    parameters:
+      decibels: volume
