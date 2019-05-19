@@ -11,6 +11,8 @@ import yaml
 
 GLOBAL_CONFIG_PATH = "global_config.yaml"
 
+CONFIG_FOLDER_NAME = "configs"
+
 def load_configuration(global_config_stream, image_config_stream):
 	global_config = Configuration(None, parse_yaml(global_config_stream))
 	image_config = Configuration(global_config, parse_yaml(image_config_stream))

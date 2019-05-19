@@ -111,6 +111,7 @@ object_defaults:
     graphic_class: displaybox
     line_thickness: 3
     default_value: sine
+    num_sprites: 4
     px70:
       width: 70
       height: 45

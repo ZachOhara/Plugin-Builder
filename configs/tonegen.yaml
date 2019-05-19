@@ -20,3 +20,23 @@ objects:
     class: waveform_box.px70
     x_pos: 155
     y_pos: 10
+parameters:
+  pitch:
+    hostname: Pitch
+    template: frequency
+  volume:
+    hostname: Volume
+    template: volume_reduction
+  waveform:
+    hostname: Waveform
+    template: waveform
+processors:
+  oscillator:
+    class: audio.Oscillator
+    parameters:
+      Frequency: pitch
+      Waveform: waveform
+  volumeProcessor:
+    class: audio.VolumeProcessor
+    parameters:
+      Decibels: volume

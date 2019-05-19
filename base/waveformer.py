@@ -13,9 +13,14 @@ from base import graphics
 
 # Primary methods
 
+WAVE_TYPES = ("sine", "triangle", "square", "sawtooth")
+
 def build_sprite_sheet(box_config, accent_color):
-	# todo
-	pass
+	sheet = graphics.blank_image((box_config.width, box_config.height * len(WAVE_TYPES)), prescaled=True)
+	for i in range(len(WAVE_TYPES)):
+		wave_image = draw_wave(box_config, accent_color, WAVE_TYPES[i])
+		sheet.paste(wave_image, box=(0, i * box_config.height))
+	return sheet
 
 def draw_wave(box_config, accent_color, wavetype):
 	image = graphics.blank_image((box_config.width, box_config.height))

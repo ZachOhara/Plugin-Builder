@@ -6,7 +6,6 @@
 # ---------------------------------------------------------
 
 from PIL import Image, ImageDraw, ImageFont
-import yaml
 
 import os
 
@@ -16,6 +15,7 @@ from base import displayboxer, knobber, waveformer
 
 def generate_image(config, render_mode=False):
 	image = build_base_image(config)
+	supporting_images = []
 	draw_signature_text(image, config)
 	for obj_name in dir(config.objects):
 		obj_config = config.objects.lookup(obj_name)
@@ -31,6 +31,9 @@ def generate_image(config, render_mode=False):
 		if obj_class.startswith("knob"):
 			draw_knob_text(image, obj_config, obj_defaults.label,
 				draw_value=(not render_mode))
+			if render_mode:
+				sprite_sheet = knobber.build_sprite_sheet(obj_defaults, obj_config.accent_color)
+				supporting_images.append((obj_name, sprite_sheet))
 			if not render_mode:
 				knob_image = knobber.draw_knob(obj_defaults, obj_config.accent_color)
 				image = composite_at_position(image, knob_image, obj_position)
@@ -40,11 +43,17 @@ def generate_image(config, render_mode=False):
 				config.object_defaults.lookup(obj_defaults.graphic_class),
 				(obj_defaults.width, obj_defaults.height))
 			image = composite_at_position(image, box_image, obj_position)
+			if render_mode:
+				sprite_sheet = waveformer.build_sprite_sheet(obj_defaults, obj_config.accent_color)
+				supporting_images.append((obj_name, sprite_sheet))
 			if not render_mode:
 				wave_image = waveformer.draw_wave(
 					obj_defaults, obj_config.accent_color, obj_defaults.default_value)
 				image = composite_at_position(image, wave_image, obj_position)
-	return image
+	if render_mode:
+		return image, supporting_images
+	else:
+		return image
 
 # Internal code
 

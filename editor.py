@@ -1,3 +1,4 @@
+
 # ---------------------------------------------------------
 # editor.py
 # A live WYSIWYG editor for audio plugin interfaces
