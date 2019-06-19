@@ -28,22 +28,22 @@ objects:
     value: "100 ms"
     x_pos: 244
     y_pos: 30
-  peak_level:
-    class: knob.px50
-    label: Peak
-    value: "50.0%"
-    x_pos: 36
-    y_pos: 130
   attack_shape:
     class: knob.px50
     label: A. Shape
     value: "0.0"
-    x_pos: 102
+    x_pos: 36
     y_pos: 130
   decay_shape:
     class: knob.px50
     label: D. Shape
     value: "0.0"
+    x_pos: 102
+    y_pos: 130
+  peak_level:
+    class: knob.px50
+    label: Peak
+    value: "50.0%"
     x_pos: 168
     y_pos: 130
   release_shape:
@@ -71,15 +71,15 @@ parameters:
   release_time:
     hostname: Release
     template: envelope_time
-  peak_level:
-    hostname: Peak
-    template: percentage
   attack_shape:
     hostname: Attack Shape
     template: envelope_shape
   decay_shape:
     hostname: Decay Shape
     template: envelope_shape
+  peak_level:
+    hostname: Peak
+    template: percentage
   release_shape:
     hostname: Release Shape
     template: envelope_shape
