@@ -48,7 +48,7 @@ object_defaults:
         font_size: 15
         v_offset: 22
       value:
-        font_size: 14
+        font_size: 15
         v_offset: -5
     px70:
       size: 70
