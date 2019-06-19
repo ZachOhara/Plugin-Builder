@@ -7,6 +7,8 @@
 
 # Primary methods
 
+TEXT_CONVERT_RATIO = 1.15 # The ratio to scale label text sizes by
+
 def generate_text(config, images):
 	parameters = []
 	for param_name in dir(config.parameters):
@@ -87,7 +89,7 @@ class ParameterInfo:
 		self.y_pos = control_config.y_pos
 		self.label_config = None
 		if "value" in dir(control_config):
-			self.label_config = config.object_defaults.lookup(control_config.lookup("class")).label	
+			self.label_config = config.object_defaults.lookup(control_config.lookup("class")).value	
 		self.template = None
 		if "template" in dir(param_config):
 			self.template = self.resolve_param_template(param_config.template)
@@ -99,7 +101,11 @@ class ParameterInfo:
 		s = "\tParameterInfo()\n"
 		s += "\t\t.InitParam(\"" + self.hostname + "\", " + self.param_id +	", " + self.bitmap_id + ", " + str(self.x_pos) + ", " + str(self.y_pos) + ")\n"
 		if self.label_config != None:
-			s += "\t\t.InitLabel()\n"
+			s += "\t\t.InitLabel("
+			s += str(convert_text_size(self.label_config.font_size))
+			s += ", "
+			s += str(self.label_config.v_offset)
+			s += ")\n"
 		if self.template != None:
 			s += "\t\t." + self.template + "()\n"
 		s = s[:-1] # remove the last newline
@@ -166,6 +172,9 @@ class BitmapInfo:
 		return self.id_handle + " PNG " + self.fn_handle + "\n"
 
 # Helper methods
+
+def convert_text_size(editorsize):
+	return round(editorsize * TEXT_CONVERT_RATIO)
 
 def get_bitmap_id_str(bitmap_name):
 	return bitmap_name.upper() + "_CONTROL_ID"
