@@ -4,7 +4,7 @@ This app provides an easy way to design and render interfaces and graphic elemen
 
 ## Sample configuration:
 
-`
+```
 name: NewConfiguration
 version: 1.0
 width: 400
@@ -26,7 +26,7 @@ processors:
     class: audio.VolumeProcessor
     parameters:
       loudness: example_control
-`
+```
 
 ## Heading
 
@@ -43,11 +43,11 @@ An object corresponds to some visual element of the interface. Every object must
 
 Every object must have a class, which defines what kind of element it is. Different classes have their own parameters, which are listed below.
 
-* `knob` - Defines a knob
-** `class: knob.px<size>` - Every knob must have a defined size, in pixels. For any given size, there must be a corresponding node in the global configuration that defines the proportions of the knob.
-** `label` - The text that appears above the knob, describing its function. The font size and vertical spacing of this text are specific to the size of the knob, and are defined in the global configuration.
-** `pv_value` - The sample text that appears as a placeholder for the value label. This is only displayed in preview mode, and is not rendered in the final output.
-** `x_pos`, `y_pos` - The x and y positions of the center of the knob.
+`knob` - Defines a knob
+* `class: knob.px<size>` - Every knob must have a defined size, in pixels. For any given size, there must be a corresponding node in the global configuration that defines the proportions of the knob.
+* `label` - The text that appears above the knob, describing its function. The font size and vertical spacing of this text are specific to the size of the knob, and are defined in the global configuration.
+* `pv_value` - The sample text that appears as a placeholder for the value label. This is only displayed in preview mode, and is not rendered in the final output.
+* `x_pos`, `y_pos` - The x and y positions of the center of the knob.
 
 `waveform_box` - Defines a selection box that is used to cycle through waveforms. A waveform box consists of a `displaybox` base that a waveform can be drawn on top of.
 * `class: waveform_box.px<size>` - Every box must have a defined size, in pixels. The defined size is the same as the desired width. For any given size, there must be a corresponding node in the global configuration that defines the proportions of the box.
