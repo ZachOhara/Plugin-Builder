@@ -82,11 +82,28 @@ class ParameterInfo:
 	def __init__(self, config, param_name):
 		param_config = config.parameters.lookup(param_name)
 		control_config = config.objects.lookup(param_name)
+		default_config = config.object_defaults.lookup(control_config.lookup("class"))
+
 		self.param_id = get_param_id_str(param_name)
 		self.hostname = param_config.hostname
 		self.bitmap_id = get_bitmap_id_str(param_name)
-		self.x_pos = control_config.x_pos
-		self.y_pos = control_config.y_pos
+		if "width" in dir(control_config) and "height" in dir(control_config):
+			self.x_pos = int(control_config.x_pos - (control_config.width / 2))
+			self.y_pos = int(control_config.y_pos - (control_config.height / 2))
+		elif "width" in dir(default_config) and "height" in dir(default_config):
+			self.x_pos = int(control_config.x_pos - (default_config.width / 2))
+			self.y_pos = int(control_config.y_pos - (default_config.height / 2))
+		elif "size" in dir(control_config):
+			self.x_pos = int(control_config.x_pos - (control_config.size / 2))
+			self.y_pos = int(control_config.y_pos - (control_config.size / 2))
+		elif "size" in dir(default_config):
+			self.x_pos = int(control_config.x_pos - (default_config.size / 2))
+			self.y_pos = int(control_config.y_pos - (default_config.size / 2))
+		else:
+			self.x_pos = 0
+			self.y_pos = 0
+			raise ValueError("Cannot find size information")
+
 		self.label_config = None
 		if "value" in dir(control_config):
 			self.label_config = config.object_defaults.lookup(control_config.lookup("class")).value	
