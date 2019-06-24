@@ -19,17 +19,29 @@ def generate_image(config, render_mode=False):
 	draw_signature_text(image, config)
 	for obj_name in dir(config.objects):
 		obj_config = config.objects.lookup(obj_name)
-		obj_class = obj_config.lookup("class") # 'class' is a Python reserved work
+		obj_class = obj_config.lookup("class") # 'class' is a Python reserved word
 		obj_defaults = config.object_defaults.lookup(obj_class)
 		obj_position = (obj_config.x_pos, obj_config.y_pos)
+		obj_size = None
+		if "width" in dir(obj_config) and "height" in dir(obj_config):
+			obj_size = (obj_config.width, obj_config.height)
+		elif "width" in dir(obj_defaults) and "height" in dir(obj_defaults):
+			obj_size = (obj_defaults.width, obj_defaults.height)
+		elif "size" in dir(obj_defaults):
+			obj_size = (obj_defaults.size, obj_defaults.size)
+		else:
+			obj_size = (0, 0)
+
 		# Displaybox
 		if obj_class.startswith("displaybox"):
-			box_image = displayboxer.draw_display_box(obj_defaults,
-				(obj_config.width, obj_config.height))
+			box_image = displayboxer.draw_display_box(obj_defaults, obj_size)
 			image = composite_at_position(image, box_image, obj_position)
+		if obj_class.startswith("displaytext"):
+			pass
+			# TODO
 		# Knob
 		if obj_class.startswith("knob"):
-			draw_knob_text(image, obj_config, obj_defaults.label,
+			draw_knob_text(image, obj_config, obj_defaults,
 				draw_value=(not render_mode))
 			if render_mode:
 				sprite_sheet = knobber.build_sprite_sheet(obj_defaults, obj_config.accent_color)
@@ -40,8 +52,7 @@ def generate_image(config, render_mode=False):
 		# Waveform_box
 		if obj_class.startswith("waveform_box"):
 			box_image = displayboxer.draw_display_box(
-				config.object_defaults.lookup(obj_defaults.graphic_class),
-				(obj_defaults.width, obj_defaults.height))
+				config.object_defaults.lookup(obj_defaults.graphic_class), obj_size)
 			image = composite_at_position(image, box_image, obj_position)
 			if render_mode:
 				sprite_sheet = waveformer.build_sprite_sheet(obj_defaults, obj_config.accent_color)
@@ -61,56 +72,62 @@ def build_base_image(config):
 	return Image.new("RGBA", (config.width, config.height), config.background_color)
 
 def draw_signature_text(image, config):
-	draw = ImageDraw.Draw(image)
-	font = ImageFont.truetype(
-		font=resolve_font(config.font), size=config.signature.font_size)
 	text_1 = config.signature.text_1.replace("@version", str(config.version))
 	text_2 = config.signature.text_2
-	textsize_1 = font.getsize(text_1)
-	textsize_2 = font.getsize(text_2)
-	textpos_1 = None
-	textpos_2 = None
-	if config.width >= config.signature.width_threshold:
-		arr_config = config.signature.one_line # shorthand
-		textpos_1 = (arr_config.h_offset,
-			config.height - arr_config.v_offset - textsize_1[1])
-		textpos_2 = (config.width - arr_config.h_offset - textsize_2[0],
-			config.height - arr_config.v_offset - textsize_2[1])
+	font_size = config.signature.font_size
+	if (config.width > config.signature.width_threshold):
+		# Put the signature on one line
+		v_offset = config.height - config.signature.one_line.v_offset
+		h_offset_1 = config.signature.one_line.h_offset
+		h_offset_2 = config.width - h_offset_1
+		draw_text(image, text_1, font_size, ("left", "bottom"), (h_offset_1, v_offset))
+		draw_text(image, text_2, font_size, ("right", "bottom"), (h_offset_2, v_offset))
 	else:
-		arr_config = config.signature.two_lines # shorthand
-		textpos_1 = ((config.width / 2) - (textsize_1[0] / 2),
-			config.height - arr_config.v_offset_1 - textsize_1[1])
-		textpos_2 = ((config.width / 2) - (textsize_2[0] / 2),
-			config.height - arr_config.v_offset_2 - textsize_2[1])
-	draw.text(textpos_1, text_1, fill=config.font_color, font=font)
-	draw.text(textpos_2, text_2, fill=config.font_color, font=font)
-	return image # this is optional, because it's the same object
+		# Put the signature on two lines
+		center = config.width / 2
+		v_offset_1 = config.height - config.signature.two_lines.v_offset_1
+		v_offset_2 = config.height - config.signature.two_lines.v_offset_2
+		draw_text(image, text_1, font_size, ("center", "bottom"), (center, v_offset_1))
+		draw_text(image, text_2, font_size, ("center", "bottom"), (center, v_offset_2))
 
-def draw_knob_text(image, control_config, label_config, draw_value=True):
-	draw = ImageDraw.Draw(image)
-	font = ImageFont.truetype(font=resolve_font(label_config.font), size=label_config.font_size)
-	label_text = control_config.label
-	label_size = font.getsize(label_text)
-	h_center = control_config.x_pos + (label_config.size / 2)
-	x_pos = h_center - (label_size[0] / 2)
-	y_pos = control_config.y_pos - label_config.v_offset
-	draw.text((x_pos, y_pos), label_text, fill=label_config.font_color, font=font)
+def draw_knob_text(image, control_config, default_config, draw_value=True):
+	# Draw the label
+	label_ypos = control_config.y_pos - (default_config.size / 2) - default_config.label.v_offset
+	draw_text(image, control_config.label, default_config.label.font_size,
+		("center", "top"), (control_config.x_pos, label_ypos))
 	if draw_value and "value" in dir(control_config):
-		value_config = label_config.value
-		value_font = ImageFont.truetype(
-			font=resolve_font(value_config.font), size=value_config.font_size)
-		value_text = control_config.value
-		value_size = value_font.getsize(value_text)
-		value_xpos = h_center - (value_size[0] / 2)
-		value_ypos = control_config.y_pos + value_config.size + value_config.v_offset	
-		draw.text((value_xpos, value_ypos), value_text, fill=value_config.font_color, font=value_font)
+		value_ypos = control_config.y_pos + (default_config.size / 2) + default_config.value.v_offset
+		draw_text(image, control_config.value, default_config.value.font_size,
+		("center", "top"), (control_config.x_pos, value_ypos))
 
 # Helper methods
 
-def composite_at_position(image1, image2, position):
+def draw_text(image, text, font_size, alignment, position, font_name="Roboto-Regular", font_color="#FFFFFF"):
+	draw = ImageDraw.Draw(image)
+	font = ImageFont.truetype(font=resolve_font(font_name), size=font_size)
+	text_size = font.getsize(text)
+	# calculate positions
+	x_pos = position[0] # assume left align, then correct if necessary
+	if alignment[0] == "right":
+		x_pos -= text_size[0]
+	elif alignment[0] == "center":
+		x_pos -= text_size[0] / 2
+	y_pos = position[1] # assume top align, then correct if necessary
+	if alignment[1] == "bottom":
+		y_pos -= text_size[1]
+	elif alignment[1] == "center":
+		y_pos -= text_size[1] / 2
+	# draw the text
+	draw.text((x_pos, y_pos), text, fill=font_color, font=font)
+
+def composite_at_position(image1, image2, center_pos):
 	temp_image = Image.new(mode="RGBA", size=image1.size, color=(0, 0, 0, 0))
+	position = get_corner_position(center_pos, image2.size)
 	temp_image.paste(image2, box=position)
 	return Image.alpha_composite(image1, temp_image)
+
+def get_corner_position(centerpos, size):
+	return (int(centerpos[0] - (size[0] / 2)), int(centerpos[1] - (size[1] / 2)))
 
 def resolve_font(configured_font):
 	return os.path.sep.join((os.getcwd(), "res", configured_font + ".ttf"))
