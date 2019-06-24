@@ -8,20 +8,20 @@ objects:
     class: knob.px80
     label: Drive
     value: "50.0%"
-    x_pos: 30
-    y_pos: 30
+    x_pos: 70
+    y_pos: 70
   tone:
     class: knob.px80
     label: Tone
     value: "50.0%"
-    x_pos: 130
-    y_pos: 30
+    x_pos: 170
+    y_pos: 70
   volume:
     class: knob.px80
     label: Volume
     value: "-0.0 dB"
-    x_pos: 230
-    y_pos: 30
+    x_pos: 270
+    y_pos: 70
 parameters:
   drive:
     hostname: Drive

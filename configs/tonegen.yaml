@@ -8,18 +8,18 @@ objects:
     class: knob.px100
     label: Pitch
     value: "440 hz"
-    x_pos: 26
-    y_pos: 50
+    x_pos: 76
+    y_pos: 100
   volume:
     class: knob.px80
     label: Volume
     value: "-0.0 dB"
-    x_pos: 150
-    y_pos: 85
+    x_pos: 190
+    y_pos: 125
   waveform:
     class: waveform_box.px70
-    x_pos: 155
-    y_pos: 10
+    x_pos: 190
+    y_pos: 32
 parameters:
   pitch:
     hostname: Pitch

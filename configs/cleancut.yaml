@@ -8,8 +8,8 @@ objects:
     class: knob.px120
     label: Volume
     value: "-0.0 dB"
-    x_pos: 15
-    y_pos: 40
+    x_pos: 75
+    y_pos: 100
 parameters:
   volume:
     hostname: Volume

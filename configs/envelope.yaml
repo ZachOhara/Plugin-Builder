@@ -8,56 +8,56 @@ objects:
     class: knob.px60
     label: Attack
     value: "100 ms"
-    x_pos: 16
-    y_pos: 30
+    x_pos: 46
+    y_pos: 60
   decay_time:
     class: knob.px60
     label: Decay
     value: "100 ms"
-    x_pos: 92
-    y_pos: 30
+    x_pos: 122
+    y_pos: 60
   sustain_level:
     class: knob.px60
     label: Sustain
     value: "50.0%"
-    x_pos: 168
-    y_pos: 30
+    x_pos: 198
+    y_pos: 60
   release_time:
     class: knob.px60
     label: Release
     value: "100 ms"
-    x_pos: 244
-    y_pos: 30
+    x_pos: 274
+    y_pos: 60
   attack_shape:
     class: knob.px50
     label: A. Shape
     value: "0.0"
-    x_pos: 36
-    y_pos: 130
+    x_pos: 61
+    y_pos: 155
   decay_shape:
     class: knob.px50
     label: D. Shape
     value: "0.0"
-    x_pos: 102
-    y_pos: 130
+    x_pos: 127
+    y_pos: 155
   peak_level:
     class: knob.px50
     label: Peak
     value: "50.0%"
-    x_pos: 168
-    y_pos: 130
+    x_pos: 193
+    y_pos: 155
   release_shape:
     class: knob.px50
     label: R. Shape
     value: "0.0"
-    x_pos: 234
-    y_pos: 130
+    x_pos: 259
+    y_pos: 155
   envelope_display:
     class: displaybox
     width: 290
     height: 120
-    x_pos: 15
-    y_pos: 200
+    x_pos: 160
+    y_pos: 260
 parameters:
   attack_time:
     hostname: Attack

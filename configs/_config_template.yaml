@@ -7,9 +7,9 @@ objects:
   example_control:
     class: knob.px80
     label: Example
-    value: "50.0%"
-    x_pos: 160
-    y_pos: 110
+    value: "50.0 %"
+    x_pos: 200
+    y_pos: 150
 parameters:
   example_control:
     hostname: Example
@@ -19,3 +19,4 @@ processors:
     class: audio.VolumeProcessor
     parameters:
       loudness: example_control
+
